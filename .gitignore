@@ -1,0 +1,12 @@
+build*/
+.qtcreator/
+*.user
+*.user.*
+*.o
+*.obj
+*.exe
+*.app/
+Makefile*
+.qmake.stash
+moc_*.cpp
+qrc_*.cpp

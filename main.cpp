@@ -1,13 +1,33 @@
-#include <iostream>
+#include "mainwindow.h"
 
-using namespace std;
+#include <QApplication>
+#include <QFile>
+#include <QFont>
+#include <QLocale>
+#include <QMessageBox>
 
-
-//vk,efvnvknvkzkf
-int main()
+int main(int argc, char *argv[])
 {
-    cout << "Hello world!" << endl;
-    cout << "Hello " << endl;
-    cout << "modified " << endl;
-    return 0;
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+#endif
+    QApplication app(argc, argv);
+    app.setApplicationName(QStringLiteral("Gestion des Ventes"));
+    app.setOrganizationName(QStringLiteral("SalesDemo"));
+    app.setStyle(QStringLiteral("Fusion"));
+    app.setFont(QFont(QStringLiteral("Segoe UI"), 10));
+    QLocale::setDefault(QLocale(QLocale::French, QLocale::France));
+
+    QFile theme(QStringLiteral(":/styles/app.qss"));
+    if (!theme.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::critical(nullptr, QStringLiteral("Ressource manquante"),
+                              QStringLiteral("Impossible de charger styles/app.qss."));
+        return 1;
+    }
+    app.setStyleSheet(QString::fromUtf8(theme.readAll()));
+
+    MainWindow window;
+    window.show();
+    return app.exec();
 }
